@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/canada_holiday_nav"
+    app:startDestination="@id/provincesListFragment">
+
+    <fragment
+        android:id="@+id/provincesListFragment"
+        android:name="com.surya.canadaholidays.view.fragment.ProvincesListFragment"
+        android:label="fragment_provinces_list"
+        tools:layout="@layout/fragment_provinces_list" >
+        <action
+            android:id="@+id/holidayListAction"
+            app:destination="@id/holidayListFragment" >
+            <argument
+                android:name="provinceCode"
+                android:defaultValue="ON" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/holidayListFragment"
+        android:name="com.surya.canadaholidays.view.fragment.HolidayListFragment"
+        android:label="fragment_holiday_list"
+        tools:layout="@layout/fragment_holiday_list" >
+        <action
+            android:id="@+id/holidayDetail"
+            app:destination="@id/holidayDetailFragment" />
+        <action
+            android:id="@+id/holidayListPopBack"
+            app:destination="@id/provincesListFragment" />
+        <argument
+            android:name="provinceCode"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/holidayDetailFragment"
+        android:name="com.surya.canadaholidays.view.fragment.HolidayDetailFragment"
+        android:label="fragment_holiday_detail"
+        tools:layout="@layout/fragment_holiday_detail" >
+        <action
+            android:id="@+id/holidayDetailPopBack"
+            app:destination="@id/holidayListFragment" />
+    </fragment>
+</navigation>

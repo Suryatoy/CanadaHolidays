@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="province"
+            type="com.surya.canadaholidays.model.Province" />
+        <variable
+            name="listener"
+            type="com.surya.canadaholidays.view.interfaces.ProvinceClickListener" />
+    </data>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:onClick="@{listener::onClick}"
+        android:tag="@{province.nameEn}"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/provinceName"
+            style="@style/Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@{province.nameEn}" />
+
+        <TextView
+            android:id="@+id/nextHoliday"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/provinceName"
+            android:layout_margin="10dp"
+            android:text="Next Holiday :" />
+
+        <ImageView
+            android:id="@+id/rightArrow"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+    </RelativeLayout>
+</layout>

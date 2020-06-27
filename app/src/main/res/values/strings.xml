@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Canada Holidays</string>
+    <string name="biometrics_success">App can authenticate using biometrics.</string>
+    <string name="biometrics_error_hardware">No biometric features available on this device.</string>
+    <string name="biometrics_error_hardware_unavailable">Biometric features are currently unavailable.</string>
+    <string name="biometrics_not_enrolled">The user hasn\'t associated any biometric credentials with their account.</string>
+    <string name="authentication_success">Authentication succeeded!</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="biometric_title">Biometric login to view details</string>
+    <string name="biometric_subtitle">Log in using your biometric credential</string>
+    <string name="biometric_negative_button">Use account password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="province_error_message">Error in getting provinces list</string>
+    <string name="holiday_error_message">Error in getting hoidays list</string>
+    <string name="next_holiday_placeholder">Next Holiday :</string>
+    <string name="holiday_date">Holiday Date :</string>
+</resources>
