@@ -49,7 +49,7 @@ class ProvincesListAdapter(private val provincesList: ArrayList<Province>) :
         for (province in provincesList) {
             if (view.tag == province.nameEn) {
                 val action =
-                    ProvincesListFragmentDirections.holidayListAction().setProvinceCode(province.id)
+                    ProvincesListFragmentDirections.holidayListAction(province)
                 Navigation.findNavController(view).navigate(action)
             }
         }

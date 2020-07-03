@@ -1,5 +1,9 @@
 package com.surya.canadaholidays.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Province(
     val holidays: List<Holiday>,
     val id: String,
@@ -8,4 +12,4 @@ data class Province(
     val nextHoliday: NextHoliday,
     val sourceEn: String,
     val sourceLink: String
-)
+):Parcelable

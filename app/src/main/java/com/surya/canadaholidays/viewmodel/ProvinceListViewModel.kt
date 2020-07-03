@@ -7,7 +7,7 @@ import com.surya.canadaholidays.di.DaggerProvinceListViewModelComponent
 import com.surya.canadaholidays.model.Province
 import com.surya.canadaholidays.model.ProvinceAPIService
 import com.surya.canadaholidays.model.ProvinceModel
-import com.surya.canadaholidays.util.GenericUtils
+import com.surya.canadaholidays.util.getYear
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -36,7 +36,7 @@ class ProvinceListViewModel(application: Application) : AndroidViewModel(applica
 
     private fun getProvinces() {
         disposable.add(
-            apiService.getProvinces(GenericUtils.getYear())
+            apiService.getProvinces(getYear())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<ProvinceModel>() {

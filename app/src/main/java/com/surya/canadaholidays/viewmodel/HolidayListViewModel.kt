@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.surya.canadaholidays.di.DaggerHolidayListViewModelComponent
 import com.surya.canadaholidays.model.*
-import com.surya.canadaholidays.util.GenericUtils
+import com.surya.canadaholidays.util.getYear
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -34,7 +34,7 @@ class HolidayListViewModel(application: Application) : AndroidViewModel(applicat
 
     private fun getHolidays(provinceCode: String?) {
         disposable.add(
-            apiService.getHolidays(provinceCode,GenericUtils.getYear())
+            apiService.getHolidays(provinceCode, getYear())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object: DisposableSingleObserver<HolidayModel>() {

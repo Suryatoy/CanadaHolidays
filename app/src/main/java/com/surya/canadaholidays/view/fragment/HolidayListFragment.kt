@@ -33,7 +33,7 @@ class HolidayListFragment : Fragment() {
 
     private lateinit var viewModel: HolidayListViewModel
     private val listAdapter = HolidaysListAdapter(arrayListOf())
-    private var provinceCode: String? = null
+    private var province: Province? = null
 
     private val holidaysListDataObserver = Observer<List<Holiday>> { list ->
         list?.let {
@@ -65,13 +65,13 @@ class HolidayListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            provinceCode = HolidayListFragmentArgs.fromBundle(it).provinceCode
+            province = HolidayListFragmentArgs.fromBundle(it).province
         }
         viewModel = ViewModelProviders.of(this).get(HolidayListViewModel::class.java)
         viewModel.holidays.observe(viewLifecycleOwner, holidaysListDataObserver)
         viewModel.loading.observe(viewLifecycleOwner, loadingLiveDataObserver)
         viewModel.loadError.observe(viewLifecycleOwner, errorLiveDataObserver)
-        viewModel.refresh(provinceCode)
+        viewModel.refresh(province?.id)
 
         holidaysRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -81,7 +81,7 @@ class HolidayListFragment : Fragment() {
             holidaysRecyclerView.visibility = View.GONE
             progressbar.visibility = View.VISIBLE
             errorText.visibility = View.GONE
-            viewModel.refresh(provinceCode)
+            viewModel.refresh(province?.id)
             animateHolidayList()
             refreshLayout.isRefreshing = false
         }
