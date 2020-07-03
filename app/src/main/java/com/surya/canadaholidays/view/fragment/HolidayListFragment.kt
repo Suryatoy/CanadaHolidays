@@ -86,13 +86,6 @@ class HolidayListFragment : Fragment() {
             animateHolidayList()
             refreshLayout.isRefreshing = false
         }
-        // colors for progress dialog
-        refreshLayout?.setColorSchemeColors(
-            ContextCompat.getColor(requireContext(), R.color.colorPrimary),
-            ContextCompat.getColor(requireContext(), R.color.colorAccent),
-            ContextCompat.getColor(requireContext(), android.R.color.holo_green_light)
-        )
-
     }
 
     /**
