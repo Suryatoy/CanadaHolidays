@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -85,6 +86,13 @@ class HolidayListFragment : Fragment() {
             animateHolidayList()
             refreshLayout.isRefreshing = false
         }
+        // colors for progress dialog
+        refreshLayout?.setColorSchemeColors(
+            ContextCompat.getColor(requireContext(), R.color.colorPrimary),
+            ContextCompat.getColor(requireContext(), R.color.colorAccent),
+            ContextCompat.getColor(requireContext(), android.R.color.holo_green_light)
+        )
+
     }
 
     /**

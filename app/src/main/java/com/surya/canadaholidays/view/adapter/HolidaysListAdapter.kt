@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.databinding.ItemHolidayBinding
 import com.surya.canadaholidays.model.Holiday
+import com.surya.canadaholidays.util.convertTimestamp
 
 class HolidaysListAdapter(private val holidaysList: ArrayList<Holiday>) :
     RecyclerView.Adapter<HolidaysListAdapter.HolidayViewHolder>() {
@@ -23,7 +24,7 @@ class HolidaysListAdapter(private val holidaysList: ArrayList<Holiday>) :
 
     override fun onBindViewHolder(holder: HolidayViewHolder, position: Int) {
         holder.view.holiday = holidaysList[position]
-        holder.view.nextHoliday.text =  holder.view.nextHoliday.context.getString(R.string.holiday_date)+" "+holidaysList[position].date
+        holder.view.nextHoliday.text =  holder.view.nextHoliday.context.getString(R.string.holiday_date)+" "+ convertTimestamp(holidaysList[position].date)
     }
 
     fun updateHolidaysList(newProvincesList: List<Holiday>) {

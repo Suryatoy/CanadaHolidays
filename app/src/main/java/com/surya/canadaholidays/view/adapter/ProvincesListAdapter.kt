@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.databinding.ItemProvinceBinding
 import com.surya.canadaholidays.model.Province
+import com.surya.canadaholidays.util.convertTimestamp
 import com.surya.canadaholidays.view.fragment.ProvincesListFragmentDirections
 import com.surya.canadaholidays.view.interfaces.ProvinceClickListener
 
@@ -35,7 +36,7 @@ class ProvincesListAdapter(private val provincesList: ArrayList<Province>) :
     override fun onBindViewHolder(holder: ProvinceViewHolder, position: Int) {
         holder.view.province = provincesList[position]
         holder.view.nextHoliday.text =
-            holder.view.nextHoliday.context.getString(R.string.next_holiday_placeholder) + " " + provincesList[position].nextHoliday.nameEn + " (" + provincesList[position].nextHoliday.date + ")"
+            holder.view.nextHoliday.context.getString(R.string.next_holiday_placeholder) + " " + provincesList[position].nextHoliday.nameEn + " (" + convertTimestamp(provincesList[position].nextHoliday.date) + ")"
         holder.view.listener = this
     }
 

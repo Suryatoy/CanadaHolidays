@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
+import androidx.core.content.ContextCompat
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -67,7 +68,6 @@ class ProvincesListFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = listAdapter
         }
-
         refreshLayout.setOnRefreshListener() {
             provincesRecyclerView.visibility = View.GONE
             progressbar.visibility = View.VISIBLE
@@ -76,6 +76,12 @@ class ProvincesListFragment : Fragment() {
             animateProvincesList()
             refreshLayout.isRefreshing = false
         }
+        // colors for progress dialog
+        refreshLayout?.setColorSchemeColors(
+            ContextCompat.getColor(requireContext(), R.color.colorPrimary),
+            ContextCompat.getColor(requireContext(), R.color.colorAccent),
+            ContextCompat.getColor(requireContext(), android.R.color.holo_green_light)
+        )
     }
 
     /**
