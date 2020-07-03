@@ -16,7 +16,7 @@
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
             tools:listitem="@layout/item_province" />
 
         <TextView

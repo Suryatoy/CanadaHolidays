@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
+
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -64,19 +67,22 @@ class ProvincesListFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = listAdapter
         }
-        provincesRecyclerView.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                LinearLayoutManager.VERTICAL
-            )
-        )
 
         refreshLayout.setOnRefreshListener() {
             provincesRecyclerView.visibility = View.GONE
             progressbar.visibility = View.VISIBLE
             errorText.visibility = View.GONE
             viewModel.refresh()
+            animateProvincesList()
             refreshLayout.isRefreshing = false
         }
+    }
+
+    /**
+     * To animate provinces recyclerview when data is refreshed
+     */
+    private fun animateProvincesList() {
+        AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down);
+        provincesRecyclerView.scheduleLayoutAnimation()
     }
 }

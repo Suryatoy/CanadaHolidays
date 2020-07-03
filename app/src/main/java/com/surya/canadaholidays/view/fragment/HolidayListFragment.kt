@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -30,9 +31,9 @@ import kotlinx.android.synthetic.main.fragment_provinces_list.refreshLayout
  */
 class HolidayListFragment : Fragment() {
 
-    private lateinit var viewModel:HolidayListViewModel
+    private lateinit var viewModel: HolidayListViewModel
     private val listAdapter = HolidaysListAdapter(arrayListOf())
-    private var provinceCode:String? = null
+    private var provinceCode: String? = null
 
     private val holidaysListDataObserver = Observer<List<Holiday>> { list ->
         list?.let {
@@ -76,19 +77,21 @@ class HolidayListFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = listAdapter
         }
-        holidaysRecyclerView.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                LinearLayoutManager.VERTICAL
-            )
-        )
-
         refreshLayout.setOnRefreshListener() {
             holidaysRecyclerView.visibility = View.GONE
             progressbar.visibility = View.VISIBLE
             errorText.visibility = View.GONE
             viewModel.refresh(provinceCode)
+            animateHolidayList()
             refreshLayout.isRefreshing = false
         }
+    }
+
+    /**
+     * To animate provinces recyclerview when data is refreshed
+     */
+    private fun animateHolidayList() {
+        AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_from_right);
+        holidaysRecyclerView.scheduleLayoutAnimation()
     }
 }
