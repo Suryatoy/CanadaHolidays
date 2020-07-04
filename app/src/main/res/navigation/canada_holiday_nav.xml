@@ -28,5 +28,20 @@
             android:name="province"
             app:argType="com.surya.canadaholidays.model.Province"
             app:nullable="true" />
+        <action
+            android:id="@+id/holidayReferenceAction"
+            app:destination="@id/holidayReferenceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/holidayReferenceFragment"
+        android:name="com.surya.canadaholidays.view.fragment.HolidayReferenceFragment"
+        android:label="holiday_reference_fragment"
+        tools:layout="@layout/holiday_reference_fragment" >
+        <action
+            android:id="@+id/referencePopBack"
+            app:destination="@id/provincesListFragment" />
+        <argument
+            android:name="holiday"
+            app:argType="com.surya.canadaholidays.model.Holiday" />
     </fragment>
 </navigation>

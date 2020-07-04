@@ -7,6 +7,10 @@
         <variable
             name="holiday"
             type="com.surya.canadaholidays.model.Holiday" />
+
+        <variable
+            name="listener"
+            type="com.surya.canadaholidays.view.interfaces.HolidayClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -14,6 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardBackgroundColor="@android:color/white"
+        android:onClick="@{(view) -> listener.onItemClick(view, holiday)}"
+        android:tag="@{holiday.id}"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="true">
@@ -22,10 +28,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <TextView
-                android:id="@+id/provinceName"
+                android:id="@+id/holidayName"
                 style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,7 +44,7 @@
                 style="@style/Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/provinceName"
+                android:layout_below="@+id/holidayName"
                 android:layout_margin="10dp"
                 android:text="@string/holiday_date" />
         </RelativeLayout>
