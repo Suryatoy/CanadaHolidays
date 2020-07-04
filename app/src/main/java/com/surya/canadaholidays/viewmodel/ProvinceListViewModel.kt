@@ -3,6 +3,7 @@ package com.surya.canadaholidays.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.surya.canadaholidays.di.DaggerProvinceListViewModelComponent
 import com.surya.canadaholidays.model.Province
 import com.surya.canadaholidays.model.ProvinceAPIService
@@ -15,7 +16,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-class ProvinceListViewModel(application: Application) : AndroidViewModel(application) {
+class ProvinceListViewModel() : ViewModel() {
     val provinces by lazy { MutableLiveData<List<Province>>() }
     val loadError by lazy { MutableLiveData<Boolean>() }
     val loading by lazy { MutableLiveData<Boolean>() }
@@ -37,7 +38,7 @@ class ProvinceListViewModel(application: Application) : AndroidViewModel(applica
     private fun getProvinces() {
         disposable.add(
             apiService.getProvinces(getYear())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<ProvinceModel>() {
                     override fun onSuccess(list: ProvinceModel) {
