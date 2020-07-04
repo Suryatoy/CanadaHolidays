@@ -4,15 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.databinding.ItemHolidayBinding
 import com.surya.canadaholidays.model.Holiday
 import com.surya.canadaholidays.util.convertTimestamp
-import com.surya.canadaholidays.view.fragment.HolidayListFragmentDirections
-import com.surya.canadaholidays.view.fragment.HolidayReferenceFragment
-import com.surya.canadaholidays.view.fragment.HolidayReferenceFragmentDirections
 import com.surya.canadaholidays.view.interfaces.HolidayClickListener
 
 class HolidaysListAdapter(private val holidaysList: ArrayList<Holiday>) :

@@ -10,12 +10,12 @@
     <style name="Title">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#303F9F</item>
+        <item name="android:textColor">@color/primaryText</item>
     </style>
 
     <style name="Text">
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">#03A9F4</item>
+        <item name="android:textColor">@color/secondaryText</item>
     </style>
 
 </resources>
