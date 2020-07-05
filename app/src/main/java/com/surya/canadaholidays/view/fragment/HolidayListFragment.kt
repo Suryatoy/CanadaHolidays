@@ -2,13 +2,13 @@ package com.surya.canadaholidays.view.fragment
 
 import android.content.ComponentName
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsServiceConnection
@@ -16,20 +16,16 @@ import androidx.browser.customtabs.CustomTabsSession
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.model.Holiday
 import com.surya.canadaholidays.model.Province
+import com.surya.canadaholidays.util.isInternetAvailable
+import com.surya.canadaholidays.util.showError
 import com.surya.canadaholidays.view.adapter.HolidaysListAdapter
-import com.surya.canadaholidays.view.adapter.ProvincesListAdapter
-import com.surya.canadaholidays.view.interfaces.HolidayClickListener
 import com.surya.canadaholidays.viewmodel.HolidayListViewModel
-import com.surya.canadaholidays.viewmodel.ProvinceListViewModel
 import kotlinx.android.synthetic.main.fragment_holiday_list.*
 import kotlinx.android.synthetic.main.fragment_provinces_list.*
-import kotlinx.android.synthetic.main.fragment_provinces_list.errorText
 import kotlinx.android.synthetic.main.fragment_provinces_list.progressbar
 import kotlinx.android.synthetic.main.fragment_provinces_list.refreshLayout
 
@@ -60,13 +56,14 @@ class HolidayListFragment : Fragment(),HolidaysListAdapter.OnItemClickListener {
     private val loadingLiveDataObserver = Observer<Boolean> { isLoading ->
         progressbar.visibility = if (isLoading) View.VISIBLE else View.GONE
         if (isLoading) {
-            errorText.visibility = View.GONE
             holidaysRecyclerView.visibility = View.GONE
         }
     }
 
-    private val errorLiveDataObserver = Observer<Boolean> { isError ->
-        errorText.visibility = if (isError) View.VISIBLE else View.GONE
+    private val errorLiveDataObserver = Observer<String> { errorMessage ->
+        context?.let {
+            showError(holidaysRecyclerView, it,errorMessage)
+        }
     }
 
     override fun onCreateView(
@@ -86,7 +83,14 @@ class HolidayListFragment : Fragment(),HolidaysListAdapter.OnItemClickListener {
         viewModel.holidays.observe(viewLifecycleOwner, holidaysListDataObserver)
         viewModel.loading.observe(viewLifecycleOwner, loadingLiveDataObserver)
         viewModel.loadError.observe(viewLifecycleOwner, errorLiveDataObserver)
-        viewModel.refresh(province?.id)
+        if(isInternetAvailable(requireContext())) {
+            viewModel.refresh(province?.id)
+        }
+        else
+        {
+            progressbar.visibility = View.GONE
+            showError(holidaysRecyclerView,requireContext(),getString(R.string.Internet_error))
+        }
         listAdapter.itemClickListener = this
         holidaysRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -96,8 +100,14 @@ class HolidayListFragment : Fragment(),HolidaysListAdapter.OnItemClickListener {
         refreshLayout.setOnRefreshListener() {
             holidaysRecyclerView.visibility = View.GONE
             progressbar.visibility = View.VISIBLE
-            errorText.visibility = View.GONE
-            viewModel.refresh(province?.id)
+            if(isInternetAvailable(requireContext())) {
+                viewModel.refresh(province?.id)
+            }
+            else
+            {
+                progressbar.visibility = View.GONE
+                showError(holidaysRecyclerView,requireContext(),getString(R.string.Internet_error))
+            }
             animateHolidayList()
             refreshLayout.isRefreshing = false
         }
@@ -136,23 +146,28 @@ class HolidayListFragment : Fragment(),HolidaysListAdapter.OnItemClickListener {
             }
         }
 
-        CustomTabsClient.bindCustomTabsService(
-            requireContext(),
-            CUSTOM_TAB_PACKAGE_NAME,
-            mCustomTabsServiceConnection as CustomTabsServiceConnection
-        )
+        context?.let {
+            CustomTabsClient.bindCustomTabsService(
+                it,
+                CUSTOM_TAB_PACKAGE_NAME,
+                mCustomTabsServiceConnection as CustomTabsServiceConnection
+            )
+        }
     }
 
-    // To load about holiday in wikipedia page
+    /**
+     * To load details about holiday in wikipedia page
+     */
     private fun loadPage(holidayName: String) {
+        context?.let {
         val urlBuilder = StringBuilder()
         urlBuilder.append("https://en.wikipedia.org/wiki/")
             .append(holidayName.replace(" ", "_"))
         val customTabsIntent = CustomTabsIntent.Builder(mCustomTabsSession)
-            .setToolbarColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+            .setToolbarColor(ContextCompat.getColor(it, R.color.colorPrimary))
             .setShowTitle(true)
             .build()
-        customTabsIntent.launchUrl(requireContext(), Uri.parse(urlBuilder.toString()))
+        customTabsIntent.launchUrl(it, Uri.parse(urlBuilder.toString())) }
 
     }
 }

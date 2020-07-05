@@ -6,15 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.view.animation.LayoutAnimationController
-import androidx.core.content.ContextCompat
-
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.model.Province
+import com.surya.canadaholidays.util.isInternetAvailable
+import com.surya.canadaholidays.util.showError
 import com.surya.canadaholidays.view.adapter.ProvincesListAdapter
 import com.surya.canadaholidays.viewmodel.ProvinceListViewModel
 import kotlinx.android.synthetic.main.fragment_provinces_list.*
@@ -39,13 +37,14 @@ class ProvincesListFragment : Fragment() {
     private val loadingLiveDataObserver = Observer<Boolean> { isLoading ->
         progressbar.visibility = if (isLoading) View.VISIBLE else View.GONE
         if (isLoading) {
-            errorText.visibility = View.GONE
             provincesRecyclerView.visibility = View.GONE
         }
     }
 
-    private val errorLiveDataObserver = Observer<Boolean> { isError ->
-        errorText.visibility = if (isError) View.VISIBLE else View.GONE
+    private val errorLiveDataObserver = Observer<String> { errorMessage ->
+        context?.let {
+            showError(provincesRecyclerView, it, errorMessage)
+        }
     }
 
     override fun onCreateView(
@@ -62,7 +61,14 @@ class ProvincesListFragment : Fragment() {
         viewModel.provinces.observe(viewLifecycleOwner, provincesListDataObserver)
         viewModel.loading.observe(viewLifecycleOwner, loadingLiveDataObserver)
         viewModel.loadError.observe(viewLifecycleOwner, errorLiveDataObserver)
-        viewModel.refresh()
+        if(isInternetAvailable(requireContext())) {
+            viewModel.refresh()
+        }
+        else
+        {
+            progressbar.visibility = View.GONE
+            showError(provincesRecyclerView,requireContext(),getString(R.string.Internet_error))
+        }
 
         provincesRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -71,8 +77,14 @@ class ProvincesListFragment : Fragment() {
         refreshLayout.setOnRefreshListener() {
             provincesRecyclerView.visibility = View.GONE
             progressbar.visibility = View.VISIBLE
-            errorText.visibility = View.GONE
-            viewModel.refresh()
+            if(isInternetAvailable(requireContext())) {
+                viewModel.refresh()
+            }
+            else
+            {
+                progressbar.visibility = View.GONE
+                showError(provincesRecyclerView,requireContext(),getString(R.string.Internet_error))
+            }
             animateProvincesList()
             refreshLayout.isRefreshing = false
         }

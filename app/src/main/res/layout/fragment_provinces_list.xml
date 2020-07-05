@@ -13,18 +13,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/provincesRecyclerView"
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:layoutAnimation="@anim/layout_animation_fall_down"
             tools:listitem="@layout/item_province" />
-
-        <TextView
-            android:id="@+id/errorText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/province_error_message"
-            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/progressbar"

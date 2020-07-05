@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class ProvinceListViewModel() : ViewModel() {
     val provinces by lazy { MutableLiveData<List<Province>>() }
-    val loadError by lazy { MutableLiveData<Boolean>() }
+    val loadError by lazy { MutableLiveData<String>() }
     val loading by lazy { MutableLiveData<Boolean>() }
 
     private val disposable = CompositeDisposable()
@@ -42,7 +42,6 @@ class ProvinceListViewModel() : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<ProvinceModel>() {
                     override fun onSuccess(list: ProvinceModel) {
-                        loadError.value = false
                         provinces.value = list.provinces
                         loading.value = false
                     }
@@ -50,7 +49,7 @@ class ProvinceListViewModel() : ViewModel() {
                     override fun onError(e: Throwable) {
                         loading.value = false
                         provinces.value = null
-                        loadError.value = true
+                        loadError.value = e.message
                     }
                 })
         )

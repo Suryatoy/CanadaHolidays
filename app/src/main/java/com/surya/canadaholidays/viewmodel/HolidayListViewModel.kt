@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class HolidayListViewModel() : ViewModel() {
     val holidays by lazy { MutableLiveData<List<Holiday>>() }
-    val loadError by lazy { MutableLiveData<Boolean>() }
+    val loadError by lazy { MutableLiveData<String>() }
     val loading by lazy { MutableLiveData<Boolean>() }
 
     private val disposable = CompositeDisposable()
@@ -40,7 +40,6 @@ class HolidayListViewModel() : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object: DisposableSingleObserver<HolidayModel>() {
                     override fun onSuccess(list: HolidayModel) {
-                        loadError.value = false
                         holidays.value = list.province.holidays
                         loading.value = false
                     }
@@ -48,7 +47,7 @@ class HolidayListViewModel() : ViewModel() {
                     override fun onError(e: Throwable) {
                         loading.value = false
                         holidays.value = null
-                        loadError.value = true
+                        loadError.value = e.message
                     }
                 })
         )

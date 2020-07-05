@@ -9,4 +9,5 @@
     <string name="holiday_date">Holiday Date :</string>
     <string name="next_holiday">Next Holiday :</string>
     <string name="Provinces">Provinces</string>
+    <string name="Internet_error">Please check your internet connectivity</string>
 </resources>
