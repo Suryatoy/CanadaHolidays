@@ -1,15 +1,38 @@
 package com.surya.canadaholidays.util
 
+import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import com.surya.canadaholidays.application.CanadaHolidaysApplication
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+private const val PREFERENCE_NAME = "com.surya.canadaholidays.preferences"
+
+
+fun getSharedPreferences(context: Context): SharedPreferences? {
+    return context.getSharedPreferences(PREFERENCE_NAME, Activity.MODE_PRIVATE)
+}
+
+/**
+ * To add a string shared preference
+ */
+fun addPreference( name: String?, value: String?) {
+    val editor = getSharedPreferences(CanadaHolidaysApplication.appContext)?.edit()
+        editor?.putString(name, value)
+        editor?.apply()
+}
+
+fun getStringPreference( name: String?, defaultValue: String?): String? {
+    return getSharedPreferences(CanadaHolidaysApplication.appContext)?.getString(name, defaultValue)
+}
 /**
  * To get current year
  */

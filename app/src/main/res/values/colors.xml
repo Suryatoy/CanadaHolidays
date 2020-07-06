@@ -5,4 +5,6 @@
     <color name="colorAccent">#448AFF</color>
     <color name="primaryText">#212121</color>
     <color name="secondaryText">#757575</color>
+    <color name="recyclerview_item_highlight">#B3E5FC</color>
+    <color name="white">#FFFFFF</color>
 </resources>

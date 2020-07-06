@@ -1,16 +1,25 @@
 package com.surya.canadaholidays.view.fragment
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.annotation.NonNull
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.model.Province
+import com.surya.canadaholidays.util.Constants
+import com.surya.canadaholidays.util.addPreference
 import com.surya.canadaholidays.util.isInternetAvailable
 import com.surya.canadaholidays.util.showError
 import com.surya.canadaholidays.view.adapter.ProvincesListAdapter
@@ -27,10 +36,12 @@ class ProvincesListFragment : Fragment() {
 
     private lateinit var viewModel: ProvinceListViewModel
     private val listAdapter = ProvincesListAdapter(arrayListOf())
+    private var provinceList = listOf<Province>()
     private val provincesListDataObserver = Observer<List<Province>> { list ->
         list?.let {
             provincesRecyclerView.visibility = View.VISIBLE
             listAdapter.updateProvincesList(it)
+            provinceList = it
         }
     }
 
@@ -73,6 +84,7 @@ class ProvincesListFragment : Fragment() {
         provincesRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = listAdapter
+             ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(provincesRecyclerView);
         }
         refreshLayout.setOnRefreshListener() {
             provincesRecyclerView.visibility = View.GONE
@@ -97,4 +109,64 @@ class ProvincesListFragment : Fragment() {
         AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down);
         provincesRecyclerView.scheduleLayoutAnimation()
     }
+
+    /**
+     * To provide swipe to left|right functionality to recyclerview
+     */
+
+    private var itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+
+            private val background = ColorDrawable(Color.BLUE)
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+               val provinceId = provinceList[viewHolder.adapterPosition].id
+                addPreference(Constants.PROVINCE_ID,provinceId)
+                listAdapter.notifyDataSetChanged()
+                animateProvincesList()
+            }
+
+            override fun onChildDraw(
+                @NonNull c: Canvas, @NonNull recyclerView: RecyclerView,
+                @NonNull viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float,
+                actionState: Int, isCurrentlyActive: Boolean
+            ) {
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+                val itemView = viewHolder.itemView
+                val backgroundCornerOffset = 20
+                if (dX > 0) { // Swiping to the right
+                    background.setBounds(
+                        itemView.left, itemView.top,
+                        itemView.left + dX.toInt() + backgroundCornerOffset,
+                        itemView.bottom
+                    )
+                } else if (dX < 0) { // Swiping to the left
+                    background.setBounds(
+                        itemView.right + dX.toInt() - backgroundCornerOffset,
+                        itemView.top, itemView.right, itemView.bottom
+                    )
+                } else { // view is unSwiped
+                    background.setBounds(0, 0, 0, 0)
+                }
+                background.draw(c)
+            }
+        }
+
+
 }

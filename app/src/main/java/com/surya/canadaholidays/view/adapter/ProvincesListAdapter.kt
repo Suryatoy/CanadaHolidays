@@ -1,16 +1,20 @@
 package com.surya.canadaholidays.view.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.databinding.ItemProvinceBinding
 import com.surya.canadaholidays.model.Province
+import com.surya.canadaholidays.util.Constants
 import com.surya.canadaholidays.util.convertTimestamp
+import com.surya.canadaholidays.util.getStringPreference
 import com.surya.canadaholidays.view.fragment.ProvincesListFragmentDirections
 import com.surya.canadaholidays.view.interfaces.ProvinceClickListener
 
@@ -38,6 +42,18 @@ class ProvincesListAdapter(private val provincesList: ArrayList<Province>) :
         holder.view.nextHoliday.text =
             holder.view.nextHoliday.context.getString(R.string.next_holiday_placeholder) + " " + provincesList[position].nextHoliday.nameEn + " (" + convertTimestamp(provincesList[position].nextHoliday.date) + ")"
         holder.view.listener = this
+        if(!getStringPreference(Constants.PROVINCE_ID,"").isNullOrBlank() ) {
+               val preferredProvinceId = getStringPreference(Constants.PROVINCE_ID,"")
+            if (preferredProvinceId.equals(provincesList[position].id)){ holder.view.cardView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.recyclerview_item_highlight));
+                holder.view.provinceItemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.recyclerview_item_highlight))
+            }
+            else{
+               holder.view.provinceItemView.setBackgroundColor(Color.WHITE)
+            }
+            }
+        else{
+            holder.view.provinceItemView.setBackgroundColor(Color.WHITE)
+        }
     }
 
     fun updateProvincesList(newProvincesList: List<Province>) {
