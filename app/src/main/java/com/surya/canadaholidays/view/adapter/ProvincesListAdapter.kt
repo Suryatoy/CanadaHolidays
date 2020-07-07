@@ -40,19 +40,24 @@ class ProvincesListAdapter(private val provincesList: ArrayList<Province>) :
     override fun onBindViewHolder(holder: ProvinceViewHolder, position: Int) {
         holder.view.province = provincesList[position]
         holder.view.nextHoliday.text =
-            holder.view.nextHoliday.context.getString(R.string.next_holiday_placeholder) + " " + provincesList[position].nextHoliday.nameEn + " (" + convertTimestamp(provincesList[position].nextHoliday.date) + ")"
+            holder.view.nextHoliday.context.getString(R.string.next_holiday_placeholder) + " " + provincesList[position].nextHoliday.nameEn + " (" + convertTimestamp(
+                provincesList[position].nextHoliday.date
+            ) + ")"
         holder.view.listener = this
-        if(!getStringPreference(Constants.PROVINCE_ID,"").isNullOrBlank() ) {
-               val preferredProvinceId = getStringPreference(Constants.PROVINCE_ID,"")
-            if (preferredProvinceId.equals(provincesList[position].id)){ holder.view.cardView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.recyclerview_item_highlight));
-                holder.view.provinceItemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.recyclerview_item_highlight))
+        if (!getStringPreference(Constants.PROVINCE_ID, "").isNullOrBlank()) {
+            val preferredProvinceId = getStringPreference(Constants.PROVINCE_ID, "")
+            if (preferredProvinceId.equals(provincesList[position].id)) {
+                holder.view.cardView.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.recyclerview_item_highlight
+                    )
+                )
+            } else {
+                holder.view.cardView.setCardBackgroundColor(Color.WHITE)
             }
-            else{
-               holder.view.provinceItemView.setBackgroundColor(Color.WHITE)
-            }
-            }
-        else{
-            holder.view.provinceItemView.setBackgroundColor(Color.WHITE)
+        } else {
+            holder.view.cardView.setCardBackgroundColor(Color.WHITE)
         }
     }
 
