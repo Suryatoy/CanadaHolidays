@@ -10,4 +10,6 @@
     <string name="next_holiday">Next Holiday :</string>
     <string name="Provinces">Provinces</string>
     <string name="Internet_error">Please check your internet connectivity</string>
+    <string name="channel_id">ChannelId</string>
+    <string name="channel_name">ChannelName</string>
 </resources>

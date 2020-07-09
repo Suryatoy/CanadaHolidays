@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import com.google.firebase.crashlytics.internal.common.CrashlyticsCore
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.view.fragment.HolidayListFragmentArgs
 
@@ -18,7 +19,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setUpNavigation()
-
     }
 
     /**

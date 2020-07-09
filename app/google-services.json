@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "563485659841",
+    "firebase_url": "https://canada-holidays-9c2e8.firebaseio.com",
+    "project_id": "canada-holidays-9c2e8",
+    "storage_bucket": "canada-holidays-9c2e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563485659841:android:898f7c9d8c74fd8c457a40",
+        "android_client_info": {
+          "package_name": "com.surya.canadaholidays"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "563485659841-htaca6oriqr2vfc5fs8d2c8p2b43937j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm7vn6sMSz59GxGiR72cTnMyfaelfIrho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "563485659841-htaca6oriqr2vfc5fs8d2c8p2b43937j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
