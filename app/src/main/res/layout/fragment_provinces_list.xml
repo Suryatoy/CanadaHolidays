@@ -7,6 +7,7 @@
     tools:context=".view.fragment.ProvincesListFragment">
 
     <RelativeLayout
+        android:id="@+id/provincesLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">

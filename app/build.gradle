@@ -99,5 +99,5 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:$firebaseNotifVersion"
     // For multidex support
     implementation 'androidx.multidex:multidex:2.0.1'
-
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
 }

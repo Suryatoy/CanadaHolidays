@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Canada Holidays</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="province_error_message">Error in getting provinces list</string>
     <string name="holiday_error_message">Error in getting hoidays list</string>
     <string name="next_holiday_placeholder">Next Holiday :</string>
@@ -12,4 +9,6 @@
     <string name="Internet_error">Please check your internet connectivity</string>
     <string name="channel_id">ChannelId</string>
     <string name="channel_name">ChannelName</string>
+    <string name="fav_province">Favourite province</string>
+    <string name="swipe_recyclerview">Swipe Right/Left to select your favourite province</string>
 </resources>
