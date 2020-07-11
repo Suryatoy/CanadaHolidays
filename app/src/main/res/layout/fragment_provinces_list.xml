@@ -14,6 +14,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/provincesRecyclerView"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layoutAnimation="@anim/layout_animation_fall_down"

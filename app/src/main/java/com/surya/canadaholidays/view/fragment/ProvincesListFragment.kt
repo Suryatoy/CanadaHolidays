@@ -199,19 +199,23 @@ class ProvincesListFragment : Fragment() {
                 )
                 val itemView = viewHolder.itemView
                 val backgroundCornerOffset = 20
-                if (dX > 0) { // Swiping to the right
-                    background.setBounds(
-                        itemView.left, itemView.top,
-                        itemView.left + dX.toInt() + backgroundCornerOffset,
-                        itemView.bottom
-                    )
-                } else if (dX < 0) { // Swiping to the left
-                    background.setBounds(
-                        itemView.right + dX.toInt() - backgroundCornerOffset,
-                        itemView.top, itemView.right, itemView.bottom
-                    )
-                } else { // view is unSwiped
-                    background.setBounds(0, 0, 0, 0)
+                when {
+                    dX > 0 -> { // Swiping to the right
+                        background.setBounds(
+                            itemView.left, itemView.top,
+                            itemView.left + dX.toInt() + backgroundCornerOffset,
+                            itemView.bottom
+                        )
+                    }
+                    dX < 0 -> { // Swiping to the left
+                        background.setBounds(
+                            itemView.right + dX.toInt() - backgroundCornerOffset,
+                            itemView.top, itemView.right, itemView.bottom
+                        )
+                    }
+                    else -> { // view is unSwiped
+                        background.setBounds(0, 0, 0, 0)
+                    }
                 }
                 background.draw(c)
             }
