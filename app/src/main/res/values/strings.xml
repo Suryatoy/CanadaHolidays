@@ -13,4 +13,6 @@
     <string name="swipe_recyclerview">Swipe Right/Left to select your favourite province</string>
     <string name="year_2020">2020</string>
     <string name="Year_2021">2021</string>
+    <string name="year_view_title">Year selection</string>
+    <string name="year_description">Select year to view holidays</string>
 </resources>

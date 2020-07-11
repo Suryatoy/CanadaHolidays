@@ -14,7 +14,6 @@ import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.material.snackbar.Snackbar
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.application.CanadaHolidaysApplication
-import kotlinx.android.synthetic.main.fragment_provinces_list.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,8 +32,30 @@ fun addPreference(name: String?, value: String?) {
     editor?.apply()
 }
 
+/**
+ * To get a String shared preference value
+ */
 fun getStringPreference(name: String?, defaultValue: String?): String? {
     return getSharedPreferences(CanadaHolidaysApplication.appContext)?.getString(name, defaultValue)
+}
+
+/**
+ * To add a Boolean shared preference
+ */
+fun addBooleanPreference(name: String?, value: Boolean) {
+    val editor = getSharedPreferences(CanadaHolidaysApplication.appContext)?.edit()
+    editor?.putBoolean(name, value)
+    editor?.apply()
+}
+
+/**
+ * To get a Boolean shared preference value
+ */
+fun getBooleanPreference(name: String?, defaultValue: Boolean): Boolean? {
+    return getSharedPreferences(CanadaHolidaysApplication.appContext)?.getBoolean(
+        name,
+        defaultValue
+    )
 }
 
 /**
@@ -121,7 +142,12 @@ fun isInternetAvailable(context: Context): Boolean {
 /**
  * To show information about views during app launch
  */
-fun showInfo(activity:Activity ,view:View,title: String, description: String) {
+fun showInfoView(
+    activity: Activity,
+    view: View,
+    title: String,
+    description: String
+) {
     TapTargetView.showFor(activity,  // `this` is an Activity
         TapTarget.forView(
             view,
@@ -143,7 +169,7 @@ fun showInfo(activity:Activity ,view:View,title: String, description: String) {
             .tintTarget(true) // Whether to tint the target view's color
             .transparentTarget(false) // Specify whether the target is transparent (displays the content underneath)
             //.icon(R.drawable.) // Specify a custom drawable to draw as the target
-            .targetRadius(60),  // Specify the target radius (in dp)
+            .targetRadius(100),  // Specify the target radius (in dp)
         object : TapTargetView.Listener() {
             // The listener can listen for regular clicks, long clicks or cancels
             override fun onTargetClick(view: TapTargetView) {

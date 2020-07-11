@@ -41,13 +41,19 @@ class ProvincesListFragment : Fragment() {
             provincesRecyclerView.visibility = View.VISIBLE
             listAdapter.updateProvincesList(it)
             provinceList = it
-            activity?.let { it1 ->
-                showInfo(
-                    it1,
-                    refreshLayout,
-                    getString(R.string.fav_province),
-                    getString(R.string.swipe_recyclerview)
-                )
+            val isInfoShown = getBooleanPreference(Constants.IS_INFO_SHOWN, false)
+            isInfoShown?.let {
+                if (!isInfoShown) {
+                    activity?.let { it1 ->
+                        showInfoView(
+                            it1,
+                            year_fab,
+                            getString(R.string.year_view_title),
+                            getString(R.string.year_description)
+                        )
+                    }
+                    addBooleanPreference(Constants.IS_INFO_SHOWN, true)
+                }
             }
         }
     }
