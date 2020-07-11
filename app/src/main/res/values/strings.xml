@@ -11,4 +11,6 @@
     <string name="channel_name">ChannelName</string>
     <string name="fav_province">Favourite province</string>
     <string name="swipe_recyclerview">Swipe Right/Left to select your favourite province</string>
+    <string name="year_2020">2020</string>
+    <string name="Year_2021">2021</string>
 </resources>

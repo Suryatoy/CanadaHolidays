@@ -4,18 +4,21 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.view.View
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.material.snackbar.Snackbar
+import com.surya.canadaholidays.R
 import com.surya.canadaholidays.application.CanadaHolidaysApplication
+import kotlinx.android.synthetic.main.fragment_provinces_list.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 private const val PREFERENCE_NAME = "com.surya.canadaholidays.preferences"
-
 
 fun getSharedPreferences(context: Context): SharedPreferences? {
     return context.getSharedPreferences(PREFERENCE_NAME, Activity.MODE_PRIVATE)
@@ -24,20 +27,40 @@ fun getSharedPreferences(context: Context): SharedPreferences? {
 /**
  * To add a string shared preference
  */
-fun addPreference( name: String?, value: String?) {
+fun addPreference(name: String?, value: String?) {
     val editor = getSharedPreferences(CanadaHolidaysApplication.appContext)?.edit()
-        editor?.putString(name, value)
-        editor?.apply()
+    editor?.putString(name, value)
+    editor?.apply()
 }
 
-fun getStringPreference( name: String?, defaultValue: String?): String? {
+fun getStringPreference(name: String?, defaultValue: String?): String? {
     return getSharedPreferences(CanadaHolidaysApplication.appContext)?.getString(name, defaultValue)
 }
+
 /**
  * To get current year
  */
 fun getYear(): Int? {
     return Calendar.getInstance().get(Calendar.YEAR)
+}
+
+/**
+ * To get current year
+ */
+fun getNextYear(): Int? {
+    return Calendar.getInstance().get(Calendar.YEAR) + 1
+}
+
+/**
+ * To Get the year from shared preferences
+ */
+fun getYearPref(): Int? {
+    val yearPref = getStringPreference(Constants.YEAR_PREFERENCE, "")
+    return if (yearPref.isNullOrEmpty() || yearPref.isNullOrBlank()) {
+        getYear()
+    } else {
+        Integer.parseInt(yearPref)
+    }
 }
 
 /**
@@ -93,4 +116,38 @@ fun isInternetAvailable(context: Context): Boolean {
         }
     }
     return result
+}
+
+/**
+ * To show information about views during app launch
+ */
+fun showInfo(activity:Activity ,view:View,title: String, description: String) {
+    TapTargetView.showFor(activity,  // `this` is an Activity
+        TapTarget.forView(
+            view,
+            title,
+            description
+        ) // All options below are optional
+            // .outerCircleColor(R.color.red) // Specify a color for the outer circle
+            .outerCircleAlpha(0.96f) // Specify the alpha amount for the outer circle
+            .targetCircleColor(R.color.white) // Specify a color for the target circle
+            .titleTextSize(20) // Specify the size (in sp) of the title text
+            .titleTextColor(R.color.white) // Specify the color of the title text
+            .descriptionTextSize(15) // Specify the size (in sp) of the description text
+            //   .descriptionTextColor(R.color.red) // Specify the color of the description text
+            //   .textColor(R.color.blue) // Specify a color for both the title and description text
+            .textTypeface(Typeface.SANS_SERIF) // Specify a typeface for the text
+            //   .dimColor(R.color.black) // If set, will dim behind the view with 30% opacity of the given color
+            .drawShadow(true) // Whether to draw a drop shadow or not
+            .cancelable(true) // Whether tapping outside the outer circle dismisses the view
+            .tintTarget(true) // Whether to tint the target view's color
+            .transparentTarget(false) // Specify whether the target is transparent (displays the content underneath)
+            //.icon(R.drawable.) // Specify a custom drawable to draw as the target
+            .targetRadius(60),  // Specify the target radius (in dp)
+        object : TapTargetView.Listener() {
+            // The listener can listen for regular clicks, long clicks or cancels
+            override fun onTargetClick(view: TapTargetView) {
+                view.dismiss(true)
+            }
+        })
 }

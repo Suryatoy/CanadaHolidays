@@ -1,13 +1,14 @@
 package com.surya.canadaholidays.viewmodel
 
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.surya.canadaholidays.di.DaggerHolidayListViewModelComponent
 import com.surya.canadaholidays.model.*
+import com.surya.canadaholidays.util.Constants
+import com.surya.canadaholidays.util.getStringPreference
 import com.surya.canadaholidays.util.getYear
+import com.surya.canadaholidays.util.getYearPref
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -23,7 +24,7 @@ class HolidayListViewModel() : ViewModel() {
 
     @Inject
     lateinit var apiService: ProvinceAPIService
-    
+
     init {
         DaggerHolidayListViewModelComponent.create().inject(this)
     }
@@ -35,10 +36,10 @@ class HolidayListViewModel() : ViewModel() {
 
     private fun getHolidays(provinceCode: String?) {
         disposable.add(
-            apiService.getHolidays(provinceCode, getYear())
+            apiService.getHolidays(provinceCode, getYearPref())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object: DisposableSingleObserver<HolidayModel>() {
+                .subscribeWith(object : DisposableSingleObserver<HolidayModel>() {
                     override fun onSuccess(list: HolidayModel) {
                         holidays.value = list.province.holidays
                         loading.value = false
@@ -52,6 +53,7 @@ class HolidayListViewModel() : ViewModel() {
                 })
         )
     }
+
     /**
      * To avoid memory leaks
      */

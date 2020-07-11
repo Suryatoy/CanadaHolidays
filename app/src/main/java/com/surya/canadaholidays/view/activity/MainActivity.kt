@@ -13,7 +13,6 @@ import com.surya.canadaholidays.view.fragment.HolidayListFragmentArgs
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
-    private val TAG = MainActivity::getLocalClassName.toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

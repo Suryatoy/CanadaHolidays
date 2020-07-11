@@ -2,11 +2,8 @@ package com.surya.canadaholidays.view.fragment
 
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Color.blue
-import android.graphics.Color.red
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,10 +20,7 @@ import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.model.Province
-import com.surya.canadaholidays.util.Constants
-import com.surya.canadaholidays.util.addPreference
-import com.surya.canadaholidays.util.isInternetAvailable
-import com.surya.canadaholidays.util.showError
+import com.surya.canadaholidays.util.*
 import com.surya.canadaholidays.view.adapter.ProvincesListAdapter
 import com.surya.canadaholidays.viewmodel.ProvinceListViewModel
 import kotlinx.android.synthetic.main.fragment_provinces_list.*
@@ -47,7 +41,14 @@ class ProvincesListFragment : Fragment() {
             provincesRecyclerView.visibility = View.VISIBLE
             listAdapter.updateProvincesList(it)
             provinceList = it
-            showInfo()
+            activity?.let { it1 ->
+                showInfo(
+                    it1,
+                    refreshLayout,
+                    getString(R.string.fav_province),
+                    getString(R.string.swipe_recyclerview)
+                )
+            }
         }
     }
 
@@ -78,69 +79,71 @@ class ProvincesListFragment : Fragment() {
         viewModel.provinces.observe(viewLifecycleOwner, provincesListDataObserver)
         viewModel.loading.observe(viewLifecycleOwner, loadingLiveDataObserver)
         viewModel.loadError.observe(viewLifecycleOwner, errorLiveDataObserver)
-        if(isInternetAvailable(requireContext())) {
+        if (isInternetAvailable(requireContext())) {
             viewModel.refresh()
-        }
-        else
-        {
+        } else {
             progressbar.visibility = View.GONE
-            showError(provincesRecyclerView,requireContext(),getString(R.string.Internet_error))
+            showError(provincesRecyclerView, requireContext(), getString(R.string.Internet_error))
         }
 
         provincesRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = listAdapter
-             ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(provincesRecyclerView);
+            ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(provincesRecyclerView);
         }
         refreshLayout.setOnRefreshListener() {
-            provincesRecyclerView.visibility = View.GONE
-            progressbar.visibility = View.VISIBLE
-            if(isInternetAvailable(requireContext())) {
-                viewModel.refresh()
+            refreshProvinces()
+        }
+        year_fab.setOnClickListener {
+            if (!fab_current_year.isShown) {
+                fab_current_year.text = getYear().toString()
+                fab_current_year.show()
+                fab_next_year.text = getNextYear().toString()
+                fab_next_year.show()
+            } else {
+                hideFabs()
             }
-            else
-            {
-                progressbar.visibility = View.GONE
-                showError(provincesRecyclerView,requireContext(),getString(R.string.Internet_error))
+        }
+        fab_current_year.setOnClickListener {
+            if (getYear() != getYearPref()) {
+                addPreference(Constants.YEAR_PREFERENCE, getYear().toString())
+                refreshProvinces()
             }
-            animateProvincesList()
-            refreshLayout.isRefreshing = false
+            hideFabs()
+        }
+        fab_next_year.setOnClickListener {
+            if (getNextYear() != getYearPref()) {
+                addPreference(Constants.YEAR_PREFERENCE, getNextYear().toString())
+                refreshProvinces()
+            }
+            hideFabs()
         }
     }
 
-    private fun showInfo() {
-        TapTargetView.showFor(activity,  // `this` is an Activity
-            TapTarget.forView(
-                refreshLayout,
-                getString(R.string.fav_province),
-                getString(R.string.swipe_recyclerview)
-            ) // All options below are optional
-                // .outerCircleColor(R.color.red) // Specify a color for the outer circle
-                .outerCircleAlpha(0.96f) // Specify the alpha amount for the outer circle
-                .targetCircleColor(R.color.white) // Specify a color for the target circle
-                .titleTextSize(20) // Specify the size (in sp) of the title text
-                .titleTextColor(R.color.white) // Specify the color of the title text
-                .descriptionTextSize(15) // Specify the size (in sp) of the description text
-                //   .descriptionTextColor(R.color.red) // Specify the color of the description text
-                //   .textColor(R.color.blue) // Specify a color for both the title and description text
-                .textTypeface(Typeface.SANS_SERIF) // Specify a typeface for the text
-                //   .dimColor(R.color.black) // If set, will dim behind the view with 30% opacity of the given color
-                .drawShadow(true) // Whether to draw a drop shadow or not
-                .cancelable(true) // Whether tapping outside the outer circle dismisses the view
-                .tintTarget(true) // Whether to tint the target view's color
-                .transparentTarget(false) // Specify whether the target is transparent (displays the content underneath)
-                //.icon(R.drawable.) // Specify a custom drawable to draw as the target
-                .targetRadius(60),  // Specify the target radius (in dp)
-            object : TapTargetView.Listener() {
-                // The listener can listen for regular clicks, long clicks or cancels
-                override fun onTargetClick(view: TapTargetView) {
-                    view.dismiss(true)
-                }
-            })
-
-
+    /**
+     * To refresh the provinces by making network call
+     */
+    private fun refreshProvinces() {
+        provincesRecyclerView.visibility = View.GONE
+        progressbar.visibility = View.VISIBLE
+        if (isInternetAvailable(requireContext())) {
+            viewModel.refresh()
+        } else {
+            progressbar.visibility = View.GONE
+            showError(
+                provincesRecyclerView,
+                requireContext(),
+                getString(R.string.Internet_error)
+            )
+        }
+        animateProvincesList()
+        refreshLayout.isRefreshing = false
     }
 
+    private fun hideFabs() {
+        fab_current_year.hide()
+        fab_next_year.hide()
+    }
 
     /**
      * To animate provinces recyclerview when data is refreshed
@@ -207,6 +210,4 @@ class ProvincesListFragment : Fragment() {
                 background.draw(c)
             }
         }
-
-
 }
