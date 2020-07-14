@@ -15,4 +15,7 @@
     <string name="Year_2021">2021</string>
     <string name="year_view_title">Year selection</string>
     <string name="year_description">Select year to view holidays</string>
+    <string name="rate_app">Rate App</string>
+    <string name="share_app">Share App</string>
+    <string name="app_share_desc">Share app via</string>
 </resources>

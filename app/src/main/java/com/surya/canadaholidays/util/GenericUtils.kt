@@ -1,21 +1,28 @@
 package com.surya.canadaholidays.util
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
 import android.view.View
+import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.material.snackbar.Snackbar
+import com.surya.canadaholidays.BuildConfig
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.application.CanadaHolidaysApplication
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 private const val PREFERENCE_NAME = "com.surya.canadaholidays.preferences"
 
@@ -176,4 +183,7 @@ fun showInfoView(
                 view.dismiss(true)
             }
         })
+
+
+
 }
