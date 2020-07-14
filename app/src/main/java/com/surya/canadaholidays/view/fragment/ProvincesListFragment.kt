@@ -2,13 +2,13 @@ package com.surya.canadaholidays.view.fragment
 
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,8 +16,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.getkeepsafe.taptargetview.TapTarget
-import com.getkeepsafe.taptargetview.TapTargetView
 import com.surya.canadaholidays.R
 import com.surya.canadaholidays.model.Province
 import com.surya.canadaholidays.util.*
@@ -34,8 +32,10 @@ import kotlinx.android.synthetic.main.fragment_provinces_list.*
 class ProvincesListFragment : Fragment() {
 
     private lateinit var viewModel: ProvinceListViewModel
+    private var interpolator = OvershootInterpolator()
     private val listAdapter = ProvincesListAdapter(arrayListOf())
     private var provinceList = listOf<Province>()
+    private val translationY = 100f
     private val provincesListDataObserver = Observer<List<Province>> { list ->
         list?.let {
             provincesRecyclerView.visibility = View.VISIBLE
@@ -104,6 +104,9 @@ class ProvincesListFragment : Fragment() {
             if (!fab_current_year.isShown) {
                 fab_current_year.text = getYear().toString()
                 fab_current_year.show()
+                year_fab.animate().setInterpolator(interpolator).rotation(45f).setDuration(300).start()
+                fab_current_year.animate().translationY(translationY).alpha(1f).setInterpolator(interpolator).setDuration(300).start()
+                fab_next_year.animate().translationY(translationY).alpha(1f).setInterpolator(interpolator).setDuration(300).start()
                 fab_next_year.text = getNextYear().toString()
                 fab_next_year.show()
             } else {
@@ -147,6 +150,9 @@ class ProvincesListFragment : Fragment() {
     }
 
     private fun hideFabs() {
+        year_fab.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start()
+        fab_current_year.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start()
+        fab_next_year.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start()
         fab_current_year.hide()
         fab_next_year.hide()
     }
