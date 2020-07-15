@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/share_app"
-        android:title="@string/share_app" />
-    <item
-        android:id="@+id/rate_app"
-        android:title="@string/rate_app" />
+        android:id="@+id/action_more"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_more"
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/share_app"
+                android:icon="@drawable/ic_action_share"
+                app:showAsAction="ifRoom"
+                android:title="@string/share_app" />
+            <item
+                android:id="@+id/rate_app"
+                android:icon="@drawable/ic_action_rate"
+                app:showAsAction="ifRoom"
+                android:title="@string/rate_app" />
+        </menu>
+    </item>
 </menu>
